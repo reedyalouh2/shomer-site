@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shomer Smart Mezuzah</title>
+<meta name="description" content="Shomer is a precision-machined smart mezuzah built around a real handwritten klaf, with an automatic Shabbat mode, a sealed klaf capsule and an e-paper Hebrew calendar.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shomer · Guardian of the door">
+<meta property="og:description" content="Shomer is a precision-machined smart mezuzah built around a real handwritten klaf, with an automatic Shabbat mode, a sealed klaf capsule and an e-paper Hebrew calendar.">
+<meta property="og:image" content="img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2715%27%20fill%3D%27%235f1724%27/%3E%3Ctext%20x%3D%2732%27%20y%3D%2747%27%20font-family%3D%27Times%20New%20Roman%2Cserif%27%20font-weight%3D%27900%27%20font-size%3D%2740%27%20text-anchor%3D%27middle%27%20fill%3D%27%23ffcf9a%27%3E%D7%A9%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@900&display=swap">
+<style>
+/* Layout: an Apple-style product story. Pure black stage; pinned, scroll-scrubbed films rendered
+   from the engineering CAD; 980px reading column; one light band to close. */
+:root {
+  color-scheme: dark;
+  --bg: #000;
+  --bg-alt: #0b0b0c;
+  --card: #0f0f10;
+  --chip: rgba(42, 42, 45, .72);
+  --chip-hi: rgba(66, 66, 69, .92);
+  --fg: #f5f5f7;
+  --muted: #86868b;
+  --dim: #6e6e73;
+  --faint: #3a3a3c;
+  --line: rgba(255, 255, 255, .12);
+  --cta: #0071e3;
+  --cta-hover: #0077ed;
+  --link: #2997ff;
+  --glow: #ffcf9a;
+  --paper: #f5f5f7;
+  --ink: #1d1d1f;
+  --ink-muted: #6e6e73;
+  --ink-line: rgba(0, 0, 0, .12);
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  --hebrew: "Frank Ruhl Libre", "Times New Roman", serif;
+  --ease: cubic-bezier(.4, 0, .6, 1);
+  --col: 980px;
+  --wide: 1300px;
+  --gl: max(22px, env(safe-area-inset-left, 0px));
+  --gr: max(22px, env(safe-area-inset-right, 0px));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 17px; line-height: 1.47; letter-spacing: -.022em; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; }
+img, canvas { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: calc(var(--col) + 44px); margin-inline: auto; padding-left: var(--gl); padding-right: var(--gr); }
+.wide { max-width: calc(var(--wide) + 44px); margin-inline: auto; padding-left: var(--gl); padding-right: var(--gr); }
+.section { padding-block: clamp(84px, 11vw, 150px); }
+.alt { background: var(--bg-alt); }
+.center { text-align: center; }
+
+.eyebrow { font-size: clamp(17px, 1.6vw, 21px); font-weight: 600; color: var(--muted); letter-spacing: .01em; margin: 0 0 10px; }
+.h-xl { font-size: clamp(44px, 7.2vw, 96px); font-weight: 600; line-height: 1.04; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.h-l { font-size: clamp(38px, 5.4vw, 72px); font-weight: 600; line-height: 1.06; letter-spacing: -.018em; margin: 0; text-wrap: balance; }
+.lede { font-size: clamp(19px, 1.7vw, 21px); font-weight: 600; color: var(--muted); line-height: 1.42; letter-spacing: .004em; max-width: 690px; margin: 26px 0 0; text-wrap: pretty; }
+.lede strong { color: var(--fg); font-weight: 600; }
+.center .lede { margin-inline: auto; }
+.he { font-family: var(--hebrew); font-weight: 900; }
+.fn { font-size: .6em; vertical-align: super; color: var(--muted); font-weight: 400; }
+.grad-warm { background: linear-gradient(95deg, #f5f5f7 10%, #ffd9a8 55%, #ff9c45 95%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad-metal { background: linear-gradient(180deg, #f5f5f7 30%, #8e8e93); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Local nav */
+.localnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: rgba(22, 22, 23, .72); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--line); transition: background .4s var(--ease); }
+.localnav.scrolled { background: rgba(22, 22, 23, .88); }
+.localnav .wide { display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 16px; }
+.brand { font-size: 21px; font-weight: 600; letter-spacing: .01em; color: var(--fg); }
+.brand:hover { text-decoration: none; }
+.localnav nav { display: flex; align-items: center; gap: 24px; font-size: 12px; }
+.localnav nav a { color: var(--fg); opacity: .8; }
+.localnav nav a:hover { opacity: 1; text-decoration: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; border: 0; cursor: pointer; background: var(--cta); color: #fff; border-radius: 980px; transition: background .2s; }
+.btn:hover { background: var(--cta-hover); text-decoration: none; }
+.btn-s { font-size: 12px; padding: 4px 12px; min-height: 24px; }
+.btn-l { font-size: 17px; padding: 12px 24px; }
+@media (max-width: 680px) { .localnav nav a.opt { display: none; } }
+
+/* Hero film: start frame, played sequence, end frame, replay */
+.hero-stage { position: relative; height: min(76vh, 62.5vw); min-height: 360px; }
+.hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mediabtn { position: absolute; right: max(22px, env(safe-area-inset-right, 0px)); bottom: 18px; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(210, 210, 215, .64); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); display: grid; place-items: center; opacity: 0; visibility: hidden; transition: opacity .4s ease-in-out, transform .2s; }
+.mediabtn.show { opacity: 1; visibility: visible; }
+.mediabtn:active { transform: scale(.95); }
+.mediabtn svg { width: 18px; height: 18px; fill: rgba(0, 0, 0, .56); }
+.hero-copy { display: flex; justify-content: space-between; align-items: flex-end; gap: 28px 48px; flex-wrap: wrap; padding-block: 18px 84px; }
+.hero-copy .name { font-size: clamp(21px, 2.2vw, 28px); font-weight: 600; margin: 0 0 4px; }
+.hero-copy .tag { font-size: clamp(46px, 7vw, 88px); font-weight: 600; line-height: 1.02; letter-spacing: -.025em; margin: 0; }
+.hero-copy .side { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 390px; }
+.hero-copy .side p { margin: 0; color: var(--muted); }
+.hero-copy .side p strong { color: var(--fg); font-weight: 600; }
+
+/* Pinned, scroll-scrubbed films */
+.scrub { position: relative; }
+.scrub-pin { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 52px); height: calc(100vh - 52px); height: calc(100svh - 52px); overflow: hidden; }
+.scrub-pin canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cap { position: absolute; left: 0; right: 0; padding-left: var(--gl); padding-right: var(--gr); pointer-events: none; opacity: 0; transform: translateY(20px); will-change: opacity, transform; }
+.cap.top { top: clamp(24px, 6vh, 64px); }
+.cap.bottom { bottom: calc(clamp(24px, 6vh, 64px) + 64px); }
+.cap .inner { max-width: var(--col); margin-inline: auto; text-align: center; }
+.cap p { font-size: clamp(21px, 2.3vw, 32px); font-weight: 600; line-height: 1.2; letter-spacing: -.01em; margin: 0; text-wrap: balance; color: var(--muted); }
+.cap p strong { color: var(--fg); font-weight: 600; }
+.mark { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: rgba(245, 245, 247, .94); color: #000; font-size: 13px; font-weight: 600; display: grid; place-items: center; box-shadow: 0 0 0 6px rgba(0, 0, 0, .35); opacity: 0; transform: scale(.6); transition: opacity .35s var(--ease), transform .35s var(--ease); pointer-events: none; }
+.mark.on { opacity: 1; transform: none; }
+.legend { list-style: none; margin: 0 auto; padding: 0; max-width: var(--col); display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 26px; font-size: 14px; text-align: left; }
+.legend li { display: flex; gap: 10px; align-items: baseline; color: var(--fg); }
+.legend b { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: var(--chip-hi); font-size: 11px; display: inline-grid; place-items: center; }
+@media (max-width: 760px) { .legend { grid-template-columns: repeat(2, 1fr); font-size: 13px; } .mark { width: 20px; height: 20px; margin: -10px 0 0 -10px; font-size: 11px; } }
+.dim { position: absolute; height: 0; border-top: 1px solid rgba(245, 245, 247, .85); opacity: 0; transition: opacity .4s var(--ease); pointer-events: none; }
+.dim::before, .dim::after { content: ""; position: absolute; top: -7px; height: 13px; border-left: 1px solid rgba(245, 245, 247, .85); }
+.dim::before { left: 0; }
+.dim::after { right: 0; }
+.dim span { position: absolute; left: 50%; top: 14px; transform: translateX(-50%); font-size: clamp(28px, 3.4vw, 48px); font-weight: 600; letter-spacing: -.02em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dim.on { opacity: 1; }
+
+/* Highlights gallery */
+.gal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+.gallery { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-left: max(22px, env(safe-area-inset-left, 0px), calc((100% - var(--wide)) / 2)); padding-right: max(22px, env(safe-area-inset-right, 0px), calc((100% - var(--wide)) / 2)); padding-bottom: 30px; margin-bottom: -30px; }
+.gallery::-webkit-scrollbar { display: none; }
+.card { flex: 0 0 min(1100px, 88%); scroll-snap-align: center; position: relative; border-radius: 28px; overflow: hidden; background: var(--card); margin: 0; }
+.card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform 6s var(--ease); }
+.card.on img { transform: scale(1.035); }
+.card figcaption { position: absolute; inset: 0 0 auto 0; padding: clamp(24px, 3.6vw, 44px) clamp(24px, 8vw, 130px) 90px; text-align: center; font-size: clamp(17px, 1.7vw, 24px); font-weight: 600; line-height: 1.25; text-wrap: balance; background: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, 0)); }
+.card figcaption .he { color: var(--glow); }
+@media (max-width: 700px) { .card img { aspect-ratio: 4 / 3; } .card figcaption { position: static; padding: 22px 22px 6px; background: none; } }
+.gal-ctrl { display: flex; justify-content: center; gap: 14px; margin-top: 30px; }
+.dots { display: flex; align-items: center; gap: 14px; height: 56px; padding-inline: 24px; border-radius: 999px; background: var(--chip); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+.dot { width: 8px; height: 8px; border-radius: 999px; border: 0; padding: 0; background: #6e6e73; cursor: pointer; position: relative; overflow: hidden; transition: width .4s cubic-bezier(.4, 0, .2, 1), background .3s; }
+.dot.on { width: 48px; background: #48484a; }
+.dot i { position: absolute; inset: 0; transform-origin: left; background: var(--fg); transform: scaleX(var(--p, 0)); border-radius: 999px; }
+.dot:not(.on) i { display: none; }
+.play { width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--chip); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); cursor: pointer; display: grid; place-items: center; }
+.play svg { width: 18px; height: 18px; fill: var(--fg); }
+
+/* Product viewer */
+.viewer { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: clamp(24px, 4vw, 72px); align-items: center; margin-top: 64px; }
+.pills { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.pill { display: inline-flex; align-items: center; gap: 14px; border: 0; cursor: pointer; text-align: left; background: var(--chip); border-radius: 28px; padding: 14px 24px 14px 16px; font-size: 17px; font-weight: 600; transition: background .2s; }
+.pill:hover { background: var(--chip-hi); }
+.pill .plus { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--fg); display: grid; place-items: center; font-size: 18px; line-height: 1; font-weight: 400; }
+.pill[aria-expanded="true"] { background: var(--chip-hi); border-radius: 24px; flex-direction: column; align-items: flex-start; padding: 22px 26px; cursor: default; font-weight: 400; max-width: 400px; }
+.pill[aria-expanded="true"] .plus, .pill[aria-expanded="true"] .label { display: none; }
+.pill .body { display: none; line-height: 1.45; }
+.pill .body b { font-weight: 600; }
+.pill[aria-expanded="true"] .body { display: block; }
+.swatches { display: flex; gap: 14px; margin-top: 18px; }
+.sw { width: 30px; height: 30px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2); position: relative; }
+.sw[aria-pressed="true"]::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--fg); }
+.sw-name { display: block; margin-top: 12px; font-size: 14px; color: var(--muted); }
+.stage { position: relative; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 28px; overflow: hidden; background: #000; }
+.stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.02); transition: opacity .6s ease, transform 1.2s var(--ease); }
+.stage img.on { opacity: 1; transform: none; }
+@media (max-width: 820px) { .viewer { grid-template-columns: 1fr; } .stage { order: -1; } }
+
+/* Turntable */
+.turn { position: relative; margin: 48px auto 0; width: min(calc(100% - 44px), 560px); aspect-ratio: 4 / 5; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.turn.grabbing { cursor: grabbing; }
+.turn canvas { width: 100%; height: 100%; }
+.turn-hint { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 18px 0 0; color: var(--muted); font-size: 15px; }
+.turn-hint svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+
+/* Shabbat sequence list */
+@media (min-width: 821px) { #shabbat .scrub-pin canvas { right: auto; width: 60%; } }
+.times { position: absolute; right: max(22px, env(safe-area-inset-right, 0px), calc((100% - var(--wide)) / 2)); top: 50%; transform: translateY(-50%); width: min(360px, 34%); list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 26px; }
+.times li { display: grid; grid-template-columns: 86px 1fr; gap: 12px; align-items: baseline; color: var(--faint); transition: color .4s; }
+.times .t { font-variant-numeric: tabular-nums; font-size: 16px; font-weight: 600; }
+.times .d { font-size: clamp(18px, 1.7vw, 22px); font-weight: 600; line-height: 1.25; }
+.times li.on { color: var(--fg); }
+.times li.on .t { color: var(--glow); }
+.times li.lock.on .d::after { content: " Shabbat mode on."; color: var(--glow); }
+@media (max-width: 820px) {
+  .times { left: 0; right: 0; top: auto; bottom: 18px; transform: none; width: auto; padding-left: var(--gl); padding-right: var(--gr); }
+  .times li:not(.on) { display: none; }
+}
+.quad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; border-top: 1px solid var(--line); padding-top: 40px; }
+.quad h3 { font-size: 21px; font-weight: 600; margin: 0 0 8px; }
+.quad p { margin: 0; color: var(--muted); }
+@media (max-width: 900px) { .quad { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .quad { grid-template-columns: 1fr; } }
+
+/* Live e-paper: today's Hebrew date and this week's zmanim, computed in the browser */
+.live { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+@media (max-width: 820px) { .live { grid-template-columns: 1fr; } .epd { justify-self: center; } }
+.epd { width: min(100%, 380px); aspect-ratio: 2 / 3; border-radius: 26px; padding: 14px; background: linear-gradient(145deg, #7d2a37, #4a0e19 45%, #2a070e); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14), 0 30px 70px rgba(0, 0, 0, .55); }
+.epd-in { height: 100%; border-radius: 16px; background: radial-gradient(120% 90% at 30% 10%, #1f1f22, #141416 60%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06), inset 0 1px 0 rgba(255, 255, 255, .08); padding: 9% 8%; display: flex; flex-direction: column; align-items: center; text-align: center; color: #e2e1da; direction: rtl; }
+.epd-in .day { color: #8a8a88; font-size: clamp(15px, 1.4vw, 18px); margin: 0; }
+.epd-in .big { font-family: var(--hebrew); font-weight: 900; font-size: clamp(44px, 4.6vw, 62px); line-height: 1.05; margin: 12px 0 2px; }
+.epd-in .yr { font-family: var(--hebrew); font-weight: 900; font-size: clamp(24px, 2.4vw, 32px); margin: 0; }
+.epd-in .en { direction: ltr; letter-spacing: .14em; font-size: 11px; font-weight: 600; color: #8a8a88; text-transform: uppercase; margin: 8px 0 0; }
+.epd-in hr { width: 56%; border: 0; border-top: 1px solid #3c3c3e; margin: 18px 0; }
+.epd-in .z { font-size: clamp(16px, 1.6vw, 20px); margin: 4px 0; font-variant-numeric: tabular-nums; }
+.epd-in .z b { font-weight: 600; }
+.epd-in .city { margin-top: auto; direction: ltr; letter-spacing: .16em; font-size: 11px; font-weight: 600; color: #8a8a88; text-transform: uppercase; }
+.select { appearance: none; -webkit-appearance: none; font: inherit; font-size: 17px; color: var(--fg); background: var(--chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23f5f5f7' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 18px center; border: 0; border-radius: 999px; padding: 12px 46px 12px 20px; cursor: pointer; }
+.countdown { margin-top: 26px; font-size: clamp(24px, 2.6vw, 34px); font-weight: 600; letter-spacing: -.01em; line-height: 1.2; text-wrap: balance; }
+.countdown em { font-style: normal; color: var(--glow); }
+.live-note { margin-top: 14px; color: var(--muted); font-size: 14px; }
+
+/* Word-by-word reveal */
+.words { font-size: clamp(28px, 3.6vw, 48px); font-weight: 600; line-height: 1.16; letter-spacing: -.015em; margin: 0; text-wrap: pretty; }
+.words .w { color: var(--faint); transition: color .25s linear; }
+.words .w.lit { color: var(--fg); }
+
+.readout { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; align-items: center; margin-top: 40px; padding: 16px 24px; border-radius: 20px; background: var(--chip); font-size: 15px; font-variant-numeric: tabular-nums; }
+.readout b { font-weight: 600; }
+.readout .ok { color: #30d158; font-weight: 600; }
+
+/* Passport */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+@media (max-width: 820px) { .split { grid-template-columns: 1fr; } }
+.sheet { justify-self: center; width: min(360px, 100%); border-radius: 40px; padding: 11px; background: linear-gradient(160deg, #3a3a3c, #1c1c1e 40%, #2c2c2e); box-shadow: 0 40px 80px rgba(0, 0, 0, .6); }
+.sheet-in { border-radius: 30px; background: #1c1c1e; padding: 28px 22px 22px; }
+.sheet-top { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.sheet-top .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(145deg, #5f1724, #250a10); font-family: var(--hebrew); font-weight: 900; font-size: 26px; color: var(--glow); }
+.sheet-top b { display: block; font-size: 17px; }
+.sheet-top small { color: var(--muted); font-size: 13px; }
+.sheet dl { margin: 0; display: grid; grid-template-columns: auto 1fr; font-size: 15px; }
+.sheet dt, .sheet dd { padding: 11px 0; border-top: 1px solid var(--line); margin: 0; }
+.sheet dt { color: var(--muted); padding-right: 16px; }
+.sheet dd { text-align: right; font-weight: 600; }
+.pass { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding: 12px 14px; border-radius: 14px; background: rgba(48, 209, 88, .12); color: #30d158; font-size: 14px; font-weight: 600; }
+.sample { display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--dim); }
+
+/* The calendar, in light: one device, a segmented control, crossfading states */
+.moments { display: flex; flex-direction: column; align-items: center; margin-top: 40px; padding-left: var(--gl); padding-right: var(--gr); }
+.moment-stage { position: relative; width: min(440px, 78vw, calc(62vh * .8)); aspect-ratio: 4 / 5; }
+.moment-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .7s ease; }
+.moment-stage::after { content: ""; position: absolute; inset: -1px; pointer-events: none; background: radial-gradient(ellipse 74% 72% at 50% 46%, rgba(0, 0, 0, 0) 58%, #000 100%); }
+.moment-stage img.on { opacity: 1; }
+.seg { position: relative; display: inline-flex; padding: 4px; margin-top: 26px; border-radius: 999px; background: var(--chip); max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.seg::-webkit-scrollbar { display: none; }
+.seg button { position: relative; z-index: 1; border: 0; background: none; color: var(--muted); font-size: 15px; font-weight: 600; letter-spacing: -.01em; padding: 10px 18px; border-radius: 999px; cursor: pointer; white-space: nowrap; transition: color .3s; }
+.seg button[aria-selected="true"] { color: var(--fg); }
+@media (max-width: 420px) { .seg button { padding: 9px 11px; font-size: 14px; } }
+.seg-pill { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 999px; background: var(--chip-hi); transition: transform .45s cubic-bezier(.4, 0, .2, 1), width .45s cubic-bezier(.4, 0, .2, 1); }
+.moment-cap { margin: 22px 0 0; color: var(--muted); font-size: clamp(17px, 1.6vw, 19px); font-weight: 600; text-align: center; max-width: 520px; min-height: 2.8em; text-wrap: balance; }
+.moment-cap strong { color: var(--fg); font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) {
+  .moment-stage img[data-m="yahrzeit"].on { animation: flicker 3.6s infinite; }
+  @keyframes flicker { 0%, 100% { filter: brightness(1); } 18% { filter: brightness(.93); } 22% { filter: brightness(1.04); } 47% { filter: brightness(.96); } 72% { filter: brightness(1.02); } 75% { filter: brightness(.94); } }
+}
+
+.lineup img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; margin-top: 48px; }
+.names { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 8px; margin-top: 4px; }
+.names div { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+.names i { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
+@media (max-width: 560px) { .names div { font-size: 12px; } }
+
+.specs { margin: 56px 0 0; display: grid; grid-template-columns: 220px 1fr; border-bottom: 1px solid var(--line); }
+.specs dt, .specs dd { margin: 0; padding: 20px 0; border-top: 1px solid var(--line); }
+.specs dt { font-weight: 600; padding-right: 24px; }
+.specs dd { color: #d2d2d7; font-variant-numeric: tabular-nums; }
+.specs dd small { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+@media (max-width: 640px) { .specs { grid-template-columns: 1fr; } .specs dd { border-top: 0; padding-top: 0; } }
+
+.light { background: var(--paper); color: var(--ink); }
+.light .eyebrow, .light .lede { color: var(--ink-muted); }
+.light .lede strong { color: var(--ink); }
+.note { margin-top: 18px; font-size: 15px; color: var(--ink-muted); min-height: 1.5em; }
+.foot { border-top: 1px solid var(--ink-line); margin-top: 72px; padding-top: 24px; font-size: 12px; line-height: 1.45; color: var(--ink-muted); }
+.foot ol { padding-left: 18px; margin: 0; display: grid; gap: 8px; }
+
+/* Floating reserve bar, like Apple's buy bar */
+.buybar { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 40; transform: translate(-50%, 160%); display: flex; align-items: center; gap: 18px; padding: 8px 8px 8px 22px; border-radius: 999px; background: rgba(42, 42, 45, .78); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 10px 40px rgba(0, 0, 0, .4); font-size: 14px; white-space: nowrap; transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.buybar.show { transform: translate(-50%, 0); }
+.buybar span { color: var(--muted); }
+.buybar b { color: var(--fg); font-weight: 600; }
+.buybar .btn { font-size: 14px; padding: 8px 18px; }
+@media (max-width: 420px) { .buybar span.opt { display: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .buybar { transition: none; } .cap { transform: none; } }
+/* Fluid-interface rules, from the apple-design skill: feedback on pointer-down, spring-shaped motion,
+   size-specific tracking, materials that respect reduced-transparency and higher-contrast settings */
+:root {
+  --spring: linear(0, 0.0401, 0.1313, 0.2431, 0.3577, 0.4656, 0.562, 0.6452, 0.7154, 0.7736, 0.821, 0.8594, 0.89, 0.9144, 0.9336, 0.9487, 0.9605, 0.9696, 0.9767, 0.9822, 0.9864, 0.9896, 0.9921, 0.994, 0.9955, 0.9966, 0.9974, 0.998, 0.9985, 0.9989, 1);
+  --spring-bounce: linear(0, 0.0417, 0.1406, 0.2666, 0.3993, 0.5257, 0.6387, 0.7348, 0.8134, 0.8753, 0.9223, 0.9567, 0.9809, 0.997, 1.0069, 1.0124, 1.0148, 1.0151, 1.0141, 1.0124, 1.0105, 1.0085, 1.0066, 1.005, 1.0036, 1.0025, 1.0016, 1.001, 1.0005, 1.0002, 1);
+}
+.btn, .pill, .sw, .seg button, .dot, .play, .mediabtn, .select { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.btn, .pill, .seg button, .play, .mediabtn, .select { transition: transform 100ms ease-out, background-color .2s, color .3s, opacity .4s ease-in-out, visibility .4s; }
+.btn:active, .pill:not([aria-expanded="true"]):active, .seg button:active, .play:active, .mediabtn:active, .select:active { transform: scale(.97); }
+.seg button:active { color: var(--fg); }
+.sw { transition: transform 100ms ease-out; }
+.sw:active { transform: scale(.92); }
+.dot:active { transform: scale(.8); }
+.seg-pill { transition: none; will-change: transform; }
+.buybar { transition: transform .6s var(--spring); will-change: transform; box-shadow: 0 10px 40px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .1); }
+.mark { transition: opacity .3s ease, transform .6s var(--spring-bounce); }
+.stage img { transition: opacity .6s ease, transform .6s var(--spring); }
+.dots, .play, .pill, .seg, .select, .mediabtn { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07); }
+/* Tracking by size: never one fixed value. Small text opens up, display text tightens. */
+.localnav nav, .btn-s, .foot, .sample, .epd-in .day { letter-spacing: 0; }
+.legend b, .fn { letter-spacing: .006em; }
+.buybar, .legend, .live-note, .sw-name, .pass, .sheet-top small { letter-spacing: -.01em; }
+.readout, .seg button, .turn-hint, .names div, .sheet dl { letter-spacing: -.016em; }
+.foot { line-height: 1.34; }
+.legend { line-height: 1.43; }
+@media (prefers-reduced-transparency: reduce) {
+  .localnav, .buybar, .dots, .play, .pill, .seg, .select, .mediabtn { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .localnav { background: #161617; }
+  .buybar, .dots, .play, .pill, .seg, .select { background: #2a2a2d; }
+  .pill[aria-expanded="true"], .seg-pill { background: #3a3a3d; }
+  .mediabtn { background: #d2d2d7; }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: #a1a1a6; --dim: #98989d; --faint: #6e6e73; --line: rgba(255, 255, 255, .4); }
+  .dots, .play, .pill, .seg, .select, .buybar, .mediabtn { outline: 1px solid rgba(255, 255, 255, .55); outline-offset: -1px; }
+  .localnav { border-bottom-color: rgba(255, 255, 255, .5); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .buybar { transform: translate(-50%, 0); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+  .buybar.show { opacity: 1; visibility: visible; }
+  .mark { transition: opacity .25s; transform: none; }
+  .btn:active, .pill:active, .seg button:active, .play:active, .mediabtn:active, .select:active, .sw:active, .dot:active { transform: none; }
+}
+</style>
+<style>html { -webkit-text-size-adjust: 100%; } [hidden] { display: none !important; }</style>
+</head>
+<body>
+<header class="localnav" id="nav">
+  <div class="wide">
+    <a class="brand" href="#top">Shomer</a>
+    <nav aria-label="Page">
+      <a class="opt" href="#design">Design</a>
+      <a class="opt" href="#shabbat">Shabbat mode</a>
+      <a class="opt" href="#inside">Inside</a>
+      <a class="opt" href="#specs">Tech specs</a>
+      <a class="btn btn-s" href="#reserve">Reserve</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section aria-label="Shomer">
+    <div class="hero-stage" id="heroStage">
+      <canvas id="heroCanvas" role="img" aria-label="Shomer in Luxury Maroon, revealed from darkness as its ש lights warm gold"></canvas>
+      <button class="mediabtn" id="replay" type="button" aria-label="Replay the reveal"><svg viewBox="0 0 24 24"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg></button>
+    </div>
+    <div class="wide hero-copy">
+      <div>
+        <p class="name">Shomer</p>
+        <h1 class="tag">Guardian of the door.</h1>
+      </div>
+      <div class="side">
+        <p><strong>A precision-machined smart mezuzah, built around a real handwritten klaf.</strong> The ש stands for <em>Shomer Daltot Yisrael</em>, guardian of the doors of Israel.</p>
+        <a class="btn btn-l" href="#reserve">Reserve</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="hl" data-stagger>
+    <div class="wide gal-head" data-si>
+      <h2 class="h-l" id="hl">The highlights.</h2>
+      <a href="#specs">See tech specs ›</a>
+    </div>
+    <div class="gallery" id="gallery" data-si>
+      <figure class="card"><figcaption>The <span class="he">ש</span> is cut through the aluminum and filled with a frosted light guide. Off, it is an inlay. On, it glows.</figcaption><img src="img/macro_letter.jpg" srcset="img/macro_letter-s.jpg 1200w, img/macro_letter.jpg 2400w" sizes="(max-width: 700px) 92vw, 1100px" width="2400" height="1500" loading="lazy" decoding="async" alt="Close-up of the glowing ש light guide in Luxury Black Matte"></figure>
+      <figure class="card"><figcaption>Eight hidden lights mark each night of Chanukah, then vanish into the metal.</figcaption><img src="img/chanukah.jpg" srcset="img/chanukah-s.jpg 1200w, img/chanukah.jpg 2400w" sizes="(max-width: 700px) 92vw, 1100px" width="2400" height="1500" loading="lazy" decoding="async" alt="Five of eight Chanukah lights glowing under the ש in Space Magenta"></figure>
+      <figure class="card"><figcaption>USB-C on the bottom edge. A six-lobe security screw keeps it on outside doors.</figcaption><img src="img/bottom.jpg" srcset="img/bottom-s.jpg 1200w, img/bottom.jpg 2400w" sizes="(max-width: 700px) 92vw, 1100px" width="2400" height="1500" loading="lazy" decoding="async" alt="Bottom edge of Shomer in Space Grey with USB-C port and security screw"></figure>
+      <figure class="card"><figcaption>Four anodized finishes, each with a polished, diamond-cut edge.</figcaption><img src="img/lineup.jpg" srcset="img/lineup-s.jpg 1200w, img/lineup.jpg 2400w" sizes="(max-width: 700px) 92vw, 1100px" width="2400" height="1200" loading="lazy" decoding="async" alt="Shomer in all four finishes"></figure>
+    </div>
+    <div class="gal-ctrl" data-si>
+      <div class="dots" id="dots" role="tablist" aria-label="Highlights"></div>
+      <button class="play" id="play" type="button" aria-label="Pause highlights"><svg viewBox="0 0 18 18" id="playIcon"></svg></button>
+    </div>
+  </section>
+
+  <section class="section" id="design" aria-labelledby="dz" data-stagger>
+    <div class="wide">
+      <p class="eyebrow" data-si>Design</p>
+      <h2 class="h-l" id="dz" data-si>Machined from solid aluminum.<br>Quiet by design.</h2>
+      <div class="viewer" data-si>
+        <div class="pills" id="pills">
+          <button class="pill" type="button" aria-expanded="true" data-view="color">
+            <span class="plus" aria-hidden="true">+</span><span class="label">Colors</span>
+            <span class="body"><b>Four finishes.</b> Bead-blasted, anodized aluminum with a polished, diamond-cut chamfer that catches the light.
+              <span class="swatches" id="swatches"></span>
+              <span class="sw-name" id="swName">Luxury Maroon</span>
+            </span>
+          </button>
+          <button class="pill" type="button" aria-expanded="false" data-view="paper">
+            <span class="plus" aria-hidden="true">+</span><span class="label">Flush e-paper</span>
+            <span class="body"><b>Light ink on e-ink black, under sapphire.</b> The Hebrew date, the parsha and zmanim. E-paper holds its image with zero power, so on Shabbat it simply stays.</span>
+          </button>
+          <button class="pill" type="button" aria-expanded="false" data-view="letter">
+            <span class="plus" aria-hidden="true">+</span><span class="label">Light-guide ש</span>
+            <span class="body"><b>Cut through the metal, filled flush.</b> A frosted light guide carries the glow, so the letter is there even when the light is off.</span>
+          </button>
+          <button class="pill" type="button" aria-expanded="false" data-view="bottom">
+            <span class="plus" aria-hidden="true">+</span><span class="label">Built for outside doors</span>
+            <span class="body"><b>Sealed to IP65.</b> USB-C on the bottom edge, a six-lobe security screw, and a motion sensor that alerts your phone if anyone pries it off.</span>
+          </button>
+        </div>
+        <div class="stage" id="stage">
+          <img class="on" data-view="color" data-finish="maroon" src="img/finish_maroon.jpg" width="1200" height="1500" alt="Shomer in Luxury Maroon">
+          <img data-view="color" data-finish="grey" src="img/finish_grey.jpg" width="1200" height="1500" loading="lazy" alt="Shomer in Space Grey">
+          <img data-view="color" data-finish="magenta" src="img/finish_magenta.jpg" width="1200" height="1500" loading="lazy" alt="Shomer in Space Magenta">
+          <img data-view="color" data-finish="black" src="img/finish_black.jpg" width="1200" height="1500" loading="lazy" alt="Shomer in Luxury Black Matte">
+          <img data-view="paper" src="img/macro_display.jpg" width="1200" height="1500" loading="lazy" alt="The e-paper display showing the Hebrew date and parsha">
+          <img data-view="letter" src="img/macro_letter.jpg" width="2400" height="1500" loading="lazy" style="object-position: 30% 50%" alt="The ש light guide up close">
+          <img data-view="bottom" src="img/bottom.jpg" width="2400" height="1500" loading="lazy" alt="USB-C port and security screw on the bottom edge">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scrub" id="thin" style="height: 280vh" aria-label="Sixteen millimeters thin">
+    <div class="scrub-pin">
+      <canvas role="img" aria-label="Shomer in Space Grey turning to its side profile, 16 millimeters deep"></canvas>
+      <div class="cap top" data-range="0,.4"><div class="inner"><p><strong>Slim enough for any doorpost.</strong></p></div></div>
+      <div class="cap top" data-range=".44,.8"><div class="inner"><p>Flat sides. A diamond-cut edge. <strong>Nothing that doesn't need to be there.</strong></p></div></div>
+      <div class="dim" id="dim16"><span>16 mm</span></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tt" data-stagger>
+    <div class="wrap center">
+      <p class="eyebrow" data-si>Luxury Maroon</p>
+      <h2 class="h-l" id="tt" data-si>Turn it in your hand.</h2>
+    </div>
+    <div class="turn" id="turn" data-si role="img" aria-label="Shomer turntable. Drag or use the arrow keys to turn it." tabindex="0"><canvas></canvas></div>
+    <p class="turn-hint" data-si><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg>Drag to turn</p>
+  </section>
+
+  <section class="scrub" id="shabbat" style="height: 300vh" aria-labelledby="sh">
+    <div class="scrub-pin">
+      <canvas role="img" aria-label="The ש warming from daylight white to amber, then the display switching to Shabbat Shalom"></canvas>
+      <div class="cap top" data-range="0,.3"><div class="inner"><p class="eyebrow" style="margin-bottom: 6px">Shabbat mode</p><h2 class="h-l grad-warm" id="sh">Set it. Then rest.</h2></div></div>
+      <ol class="times" id="times" aria-label="Friday, sample times for New York">
+        <li class="on"><span class="t">3:30 PM</span><span class="d">Friday afternoon. The ש glows daylight white.</span></li>
+        <li><span class="t">4:45 PM</span><span class="d">As the sun drops, the glow starts to warm.</span></li>
+        <li><span class="t">5:25 PM</span><span class="d">Deep amber. Sixteen minutes to candle lighting.</span></li>
+        <li class="lock"><span class="t">5:41 PM</span><span class="d">Candle lighting. The display refreshes and locks.</span></li>
+      </ol>
+    </div>
+  </section>
+  <section class="alt" aria-label="How Shabbat mode works" data-stagger>
+    <div class="wrap section" style="padding-top: 72px">
+      <p class="words" data-words>Shomer knows when Shabbat begins wherever you live. At candle lighting it locks its glow, freezes its display and powers down every sensor. Nothing anyone does at the door changes a single circuit until havdalah.</p>
+      <div class="quad" style="margin-top: 72px" data-si>
+        <div><h3>Sensors off, not ignored.</h3><p>Touch, motion and proximity sensors lose power entirely. Walking past or touching it changes nothing.</p></div>
+        <div><h3>Radio silent.</h3><p>No app messages, updates or battery alerts. Anything that can wait, waits for havdalah.</p></div>
+        <div><h3>Yom Tov aware.</h3><p>Two-day Yom Tov outside Israel, Yom Kippur, and Shabbat that runs straight into a holiday.</p></div>
+        <div><h3>Fails safe.</h3><p>If Shomer ever loses track of time, it stays in Shabbat mode until it is set again.<span class="fn">1</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="live" aria-labelledby="lv" data-stagger>
+    <div class="wide live">
+      <div class="epd" data-si aria-live="polite" aria-label="Sample Shomer display for the selected city">
+        <div class="epd-in" id="epd">
+          <p class="day" id="epdDay">&nbsp;</p>
+          <p class="big" id="epdDate">&nbsp;</p>
+          <p class="yr" id="epdYear">&nbsp;</p>
+          <p class="en" id="epdEn">&nbsp;</p>
+          <hr>
+          <p class="z">הדלקת נרות <b id="epdLight">--:--</b></p>
+          <p class="z">הבדלה <b id="epdHav">--:--</b></p>
+          <p class="city" id="epdCity">&nbsp;</p>
+        </div>
+      </div>
+      <div data-si>
+        <p class="eyebrow">Live</p>
+        <h2 class="h-l" id="lv">This week,<br>at your door.</h2>
+        <p class="lede">Shomer works out zmanim on the device, from where it hangs. <strong>This panel is doing the same math right now, in your browser.</strong></p>
+        <p style="margin-top: 26px"><label class="sr" for="city" style="position:absolute;left:-9999px">City</label><select class="select" id="city"></select></p>
+        <p class="countdown" id="countdown" aria-live="polite">&nbsp;</p>
+        <p class="live-note">Sunset from a solar model, accurate to about two minutes. Candle lighting 18 minutes before sunset (40 in Jerusalem, 20 in Tel Aviv), havdalah 42 minutes after. Your community's custom may differ.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scrub" id="inside" style="height: 340vh" aria-labelledby="in">
+    <div class="scrub-pin">
+      <canvas role="img" aria-label="Teardown: Shomer lying face up separates into sapphire, light guide, enclosure, e-paper, logic board, klaf capsule, battery and mounting plate"></canvas>
+      <div class="cap top" data-range="0,.3"><div class="inner"><p class="eyebrow" style="margin-bottom: 6px">Inside</p><h2 class="h-l grad-metal" id="in">A sanctuary for the scroll.</h2></div></div>
+      <div class="cap bottom" data-range=".34,.6"><div class="inner"><p>The klaf rides in <strong>its own sealed capsule,</strong> far from the battery and every circuit.</p></div></div>
+      <div class="cap bottom" data-range=".62,.84"><div class="inner"><p>Light-guide ש, e-paper and a logic board built for Shabbat. <strong>All behind 1.2 mm of machined aluminum.</strong></p></div></div>
+      <div class="cap bottom" data-range=".87,1.01"><div class="inner"><ol class="legend" id="legend"></ol></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="guardian" aria-labelledby="kg" data-stagger>
+    <div class="wrap center">
+      <p class="eyebrow" data-si>Klaf Guardian</p>
+      <h2 class="h-xl" id="kg" data-si>It looks after<br>what matters most.</h2>
+      <p class="lede" data-si>A sensor inside the capsule <strong>watches humidity and temperature, and warns you before moisture can reach the ink.</strong></p>
+      <div class="readout" data-si aria-label="Sample capsule reading"><span>Capsule</span><b>41% RH</b><b>21 °C</b><span class="ok">● Scroll safe</span><span style="color: var(--dim)">Sample reading</span></div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="kp" data-stagger>
+    <div class="wide split">
+      <div data-si>
+        <p class="eyebrow">Klaf Passport</p>
+        <h2 class="h-l" id="kp">Tap to see who wrote it.</h2>
+        <p class="lede">A secure NFC tag carries your scroll's record: <strong>the sofer, when it was written, who certified it, and every inspection since.</strong> Printed fake scrolls can't copy it. Shomer reminds you when the klaf is due for a check, twice every seven years.</p>
+      </div>
+      <div class="sheet" data-si aria-label="Sample Klaf Passport record">
+        <div class="sheet-in">
+          <div class="sheet-top"><span class="icon" aria-hidden="true">ש</span><div><b>Klaf Passport</b><small>Front door · Luxury Maroon</small></div></div>
+          <dl>
+            <dt>Scribe</dt><dd>Certified sofer, Jerusalem</dd>
+            <dt>Written</dt><dd>Elul 5786</dd>
+            <dt>Script</dt><dd>Beit Yosef · 12 cm</dd>
+            <dt>Last check</dt><dd>Tishrei 5787</dd>
+            <dt>Next check</dt><dd>Adar 5790</dd>
+          </dl>
+          <div class="pass">✓ Kosher · Signature verified</div>
+        </div>
+        <span class="sample">Sample record</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="year" aria-labelledby="yr">
+    <div class="wrap center" data-stagger>
+      <p class="eyebrow" data-si>The calendar, in light</p>
+      <h2 class="h-l" id="yr" data-si>The Jewish year,<br>right at your door.</h2>
+    </div>
+    <div class="moments" id="moments">
+      <div class="moment-stage">
+        <img class="on" data-m="chanukah" src="img/moment_chanukah.jpg" srcset="img/moment_chanukah-s.jpg 600w, img/moment_chanukah.jpg 1200w" sizes="(max-width: 600px) 78vw, 440px" width="1200" height="1500" loading="lazy" decoding="async" alt="Shomer in Luxury Black Matte with five Chanukah lights lit and the display reading Chanukah, fifth candle">
+        <img data-m="omer" src="img/moment_omer.jpg" srcset="img/moment_omer-s.jpg 600w, img/moment_omer.jpg 1200w" sizes="(max-width: 600px) 78vw, 440px" width="1200" height="1500" loading="lazy" decoding="async" alt="Shomer counting the Omer on its display, day 33">
+        <img data-m="yahrzeit" src="img/moment_yahrzeit.jpg" srcset="img/moment_yahrzeit-s.jpg 600w, img/moment_yahrzeit.jpg 1200w" sizes="(max-width: 600px) 78vw, 440px" width="1200" height="1500" loading="lazy" decoding="async" alt="Shomer with a low amber memorial glow and the display reading Ner Zikaron">
+        <img data-m="welcome" src="img/moment_welcome.jpg" srcset="img/moment_welcome-s.jpg 600w, img/moment_welcome.jpg 1200w" sizes="(max-width: 600px) 78vw, 440px" width="1200" height="1500" loading="lazy" decoding="async" alt="Shomer with its ש glowing blue and the display reading Bruchim HaBaim">
+      </div>
+      <div class="seg" role="tablist" aria-label="Moments through the year">
+        <span class="seg-pill" aria-hidden="true"></span>
+        <button type="button" role="tab" aria-selected="true" data-m="chanukah">Chanukah</button>
+        <button type="button" role="tab" aria-selected="false" tabindex="-1" data-m="omer">Omer</button>
+        <button type="button" role="tab" aria-selected="false" tabindex="-1" data-m="yahrzeit">Yahrzeit</button>
+        <button type="button" role="tab" aria-selected="false" tabindex="-1" data-m="welcome">Welcome</button>
+      </div>
+      <p class="moment-cap" id="momentCap" aria-live="polite"><strong>Chanukah.</strong> One more hidden light each night, eight in all.</p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="fin" data-stagger>
+    <div class="wrap center">
+      <p class="eyebrow" data-si>Finishes</p>
+      <h2 class="h-l" id="fin" data-si>Four finishes.<br>Each one deliberate.</h2>
+    </div>
+    <div class="wide lineup" data-si>
+      <img src="img/lineup.jpg" srcset="img/lineup-s.jpg 1200w, img/lineup.jpg 2400w" sizes="(max-width: 1300px) 100vw, 1300px" width="2400" height="1200" loading="lazy" decoding="async" alt="Shomer in Luxury Maroon, Space Grey, Space Magenta and Luxury Black Matte">
+      <div class="names" id="names"></div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pv">
+    <div class="wrap center">
+      <h2 class="h-xl grad-metal" id="pv">No camera.<br>No microphone.<br>Ever.</h2>
+      <p class="words" data-words style="margin-top: 40px">Shomer is a sacred object first. It has nothing that can watch or listen, by design. Your door is your own.</p>
+    </div>
+  </section>
+
+  <section class="section alt" id="specs" aria-labelledby="ts" data-stagger>
+    <div class="wrap">
+      <h2 class="h-l" id="ts" data-si>Tech specs</h2>
+      <p class="lede" data-si>Target specifications for the first production run.<span class="fn">2</span></p>
+      <dl class="specs" data-si>
+        <dt>Size</dt><dd>140 × 30 × 16 mm<small>Fits 10 cm and 12 cm klafim</small></dd>
+        <dt>Enclosure</dt><dd>CNC-machined 6061 aluminum, bead-blasted and anodized<small>1.2 mm walls, polished 0.8 mm diamond-cut front chamfer</small></dd>
+        <dt>Finishes</dt><dd>Luxury Maroon, Space Grey, Space Magenta, Luxury Black Matte</dd>
+        <dt>Light</dt><dd>Frosted light-guide ש, full color with warm white<small>Eight Chanukah LEDs behind 0.7 mm micro-perforations</small></dd>
+        <dt>Display</dt><dd>1.4-inch e-paper under sapphire crystal<small>Holds its image with no power</small></dd>
+        <dt>Klaf capsule</dt><dd>Sealed and gasketed, separate from the electronics<small>Humidity and temperature sensor inside</small></dd>
+        <dt>Wireless</dt><dd>Wi-Fi 6, Bluetooth LE, Thread<small>Matter-ready for whole-home Shabbat scenes</small></dd>
+        <dt>Sensors</dt><dd>Capacitive touch, accelerometer, ambient light<small>All power-gated in Shabbat mode</small></dd>
+        <dt>NFC</dt><dd>Secure tag for Klaf Passport</dd>
+        <dt>Power</dt><dd>1100 mAh rechargeable battery, USB-C<small>Up to 12 months between charges</small></dd>
+        <dt>Mounting</dt><dd>Aluminum mounting plate, four M1.6 screws, six-lobe security screw</dd>
+        <dt>Rating</dt><dd>IP65 for outside doors</dd>
+        <dt>Camera and mic</dt><dd>None</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section light" id="reserve" aria-labelledby="rs">
+    <div class="wrap center">
+      <p class="eyebrow">Shomer</p>
+      <h2 class="h-xl" id="rs">Coming 2027.</h2>
+      <p class="lede">Every Shomer ships with a <strong>certified, handwritten klaf</strong> and a Klaf Passport, ready to hang.</p>
+      <p style="margin-top: 32px"><button class="btn btn-l" id="reserveBtn" type="button">Reserve yours</button></p>
+      <p class="note" id="note" aria-live="polite"></p>
+    </div>
+    <div class="wrap">
+      <div class="foot">
+        <ol>
+          <li>Shabbat mode is designed for rabbinic certification, for example by the Zomet Institute. Certification is pending. Candle lighting and havdalah settings follow your community's custom.</li>
+          <li>All specifications are targets and will be confirmed after prototype testing. Battery life depends on use and settings.</li>
+          <li>Images and films are path-traced renderings of the engineering CAD model. The production product may differ. Times shown are samples for New York.</li>
+          <li>Shomer is a working name.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="buybar" id="buybar" aria-hidden="true"><b>Shomer</b><span class="opt">Coming 2027</span><a class="btn" href="#reserve" tabindex="-1">Reserve</a></div>
+
+<script>
+(() => {
+  'use strict';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  /* Springs, per the apple-design skill: damping ratio and response instead of durations.
+     Retargeting keeps the live value and velocity, so motion never hits a brick wall. */
+  class Spring {
+    constructor(value, damping = 1, response = .4) { this.x = this.target = value; this.v = 0; this.tune(damping, response); }
+    tune(damping, response) { const w = 2 * Math.PI / response; this.k = w * w; this.c = 2 * damping * w; return this; }
+    to(target, velocity) { this.target = target; if (velocity !== undefined) this.v = velocity; return this; }
+    snap(value) { this.x = this.target = value; this.v = 0; return this; }
+    step(dt) {
+      for (let t = Math.min(dt, .064); t > 0; t -= 1 / 240) {
+        const h = Math.min(1 / 240, t);
+        this.v += (-this.k * (this.x - this.target) - this.c * this.v) * h;
+        this.x += this.v * h;
+      }
+      const resting = Math.abs(this.x - this.target) < 1e-4 && Math.abs(this.v) < 1e-3;
+      if (resting) { this.x = this.target; this.v = 0; }
+      return !resting;
+    }
+  }
+
+  /* Film data: frame counts and sizes, plus anchors projected from the CAD scenes */
+  const FILMS = {
+    hero: { n: 60, w: 1600, h: 1000 },
+    thin: { n: 48, w: 1600, h: 1000 },
+    turntable: { n: 36, w: 1080, h: 1350 },
+    shabbat: { n: 48, w: 1200, h: 1200 },
+    exploded: { n: 72, w: 1600, h: 1000 }
+  };
+  const ANCHORS = {
+    exploded: [
+      ['Sapphire crystal', .6909, .0637], ['Light-guide ש', .7275, .1472], ['Machined enclosure', .428, .2765], ['E-paper display', .4972, .3868],
+      ['Logic board', .3311, .5014], ['Sealed klaf capsule', .2698, .6535], ['Battery', .307, .669], ['Mounting plate', .2865, .7186]
+    ],
+    thin: { front: [.4706, .4766], back: [.5294, .4766], bottom: [.5, .883] }
+  };
+
+  /* Image sequence on canvas: progressive loading, crossfaded frames, contain or cover fit */
+  class Sequence {
+    constructor(canvas, name, opts = {}) {
+      Object.assign(this, FILMS[name], { canvas, name, fit: opts.fit || 'contain', focus: opts.focus || [.5, .5], wrap: !!opts.wrap });
+      this.ctx = canvas.getContext('2d', { alpha: false });
+      this.imgs = new Array(this.n);
+      this.ready = new Uint8Array(this.n);
+      this.t = 0;
+      this.box = { x: 0, y: 0, w: 0, h: 0 };
+      this.resize();
+      new ResizeObserver(() => { this.resize(); this.draw(this.t); }).observe(canvas);
+    }
+    url(i) { return `seq/${this.name}/${String(i + 1).padStart(3, '0')}.jpg`; }
+    order() {
+      // Ends first, then coarse to fine, so scrubbing works before every frame arrives
+      const seen = new Set(), out = [];
+      const push = i => { if (i >= 0 && i < this.n && !seen.has(i)) { seen.add(i); out.push(i); } };
+      push(0); push(this.n - 1);
+      for (const step of [16, 8, 4, 2, 1]) for (let i = 0; i < this.n; i += step) push(i);
+      return out;
+    }
+    load(onAll) {
+      if (!this.loading) {
+        const queue = this.order();
+        let active = 0, done = 0;
+        this.loading = new Promise(resolve => {
+          const finish = () => { done++; if (done === this.n) resolve(); else next(); };
+          const next = () => {
+            while (active < 6 && queue.length) {
+              const i = queue.shift(); active++;
+              const im = new Image();
+              im.decoding = 'async';
+              im.onload = () => { this.imgs[i] = im; this.ready[i] = 1; active--; if (Math.abs(i - this.t) < 2 || i === 0) this.draw(this.t); finish(); };
+              im.onerror = () => { active--; finish(); };
+              im.src = this.url(i);
+            }
+          };
+          next();
+        });
+      }
+      if (onAll) this.loading.then(onAll);
+      return this.loading;
+    }
+    resize() {
+      const r = this.canvas.getBoundingClientRect();
+      const W = Math.max(1, Math.round(r.width * DPR)), H = Math.max(1, Math.round(r.height * DPR));
+      if (this.canvas.width !== W || this.canvas.height !== H) { this.canvas.width = W; this.canvas.height = H; }
+      const s = this.fit === 'cover' ? Math.max(W / this.w, H / this.h) : Math.min(W / this.w, H / this.h);
+      const w = this.w * s, h = this.h * s;
+      this.box = { x: (W - w) * this.focus[0], y: (H - h) * this.focus[1], w, h };
+    }
+    nearest(i) {
+      if (this.ready[i]) return i;
+      for (let d = 1; d < this.n; d++) {
+        const a = this.wrap ? (i - d + this.n) % this.n : i - d, b = this.wrap ? (i + d) % this.n : i + d;
+        if (a >= 0 && this.ready[a]) return a;
+        if (b < this.n && this.ready[b]) return b;
+      }
+      return -1;
+    }
+    draw(t) {
+      this.t = t;
+      const { ctx, canvas, box } = this;
+      const i0 = Math.floor(t), f = t - i0;
+      const base = ((i0 % this.n) + this.n) % this.n;
+      const i1 = this.wrap ? (base + 1) % this.n : Math.min(this.n - 1, base + 1);
+      const a = this.nearest(base);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (a < 0) return;
+      ctx.drawImage(this.imgs[a], box.x, box.y, box.w, box.h);
+      if (f > .02 && this.ready[i1] && i1 !== a) { ctx.globalAlpha = f; ctx.drawImage(this.imgs[i1], box.x, box.y, box.w, box.h); ctx.globalAlpha = 1; }
+      this.feather();
+    }
+    // Fade the frame's edges into the black stage so a studio floor never ends in a hard line
+    feather() {
+      const { ctx, box } = this, fx = box.w * .08, fy = box.h * .08;
+      const edge = (x0, y0, x1, y1, rx, ry, rw, rh) => {
+        const g = ctx.createLinearGradient(x0, y0, x1, y1);
+        g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g; ctx.fillRect(rx, ry, rw, rh);
+      };
+      edge(box.x, 0, box.x + fx, 0, box.x - 1, box.y, fx + 1, box.h);
+      edge(box.x + box.w, 0, box.x + box.w - fx, 0, box.x + box.w - fx, box.y, fx + 1, box.h);
+      edge(0, box.y, 0, box.y + fy, box.x, box.y - 1, box.w, fy + 1);
+      edge(0, box.y + box.h, 0, box.y + box.h - fy, box.x, box.y + box.h - fy, box.w, fy + 1);
+    }
+    // A film-normalized point, in CSS pixels inside the canvas element (for overlays)
+    point(x, y) { return [(this.box.x + x * this.box.w) / DPR, (this.box.y + y * this.box.h) / DPR]; }
+  }
+
+  /* Scroll scrub: pinned section, playback eased toward the scroll target */
+  function scrub(section, seq, onProgress) {
+    let active = false, last = 0;
+    const spring = new Spring(0, 1, .35);   // critically damped: follows the scroll, keeps its velocity on reversal
+    const measure = () => {
+      const r = section.getBoundingClientRect();
+      return clamp(-r.top / Math.max(1, section.offsetHeight - innerHeight), 0, 1);
+    };
+    const step = now => {
+      if (!active) return;
+      const dt = last ? (now - last) / 1000 : 1 / 60;
+      last = now;
+      spring.to(measure());
+      if (reduce) spring.snap(spring.target); else spring.step(dt);
+      seq.draw(spring.x * (seq.n - 1));
+      if (onProgress) onProgress(spring.x);
+      requestAnimationFrame(step);
+    };
+    new IntersectionObserver(es => {
+      const was = active;
+      active = es[0].isIntersecting;
+      if (active) { seq.load(); if (!was) { last = 0; spring.snap(measure()); requestAnimationFrame(step); } }
+    }, { rootMargin: '60% 0px 60% 0px' }).observe(section);
+    spring.snap(measure());
+    seq.draw(spring.x * (seq.n - 1));
+    if (onProgress) onProgress(spring.x);
+  }
+
+  /* Captions that live on a progress range, like Apple's keyframed copy */
+  function ranges(section, p) {
+    section.querySelectorAll('[data-range]').forEach(el => {
+      const [a, b] = el.dataset.range.split(',').map(Number);
+      const fade = .05;
+      const o = b > 1 ? clamp((p - a) / fade, 0, 1) : clamp((p - a) / fade, 0, 1) * clamp((b - p) / fade, 0, 1);
+      el.style.opacity = o.toFixed(3);
+      if (!reduce) el.style.transform = `translateY(${((1 - o) * 20).toFixed(1)}px)`;
+    });
+  }
+
+  /* Hero: start frame, played reveal, end frame, replay */
+  const hero = new Sequence(document.getElementById('heroCanvas'), 'hero');
+  const replay = document.getElementById('replay');
+  let heroStarted = false;
+  function playHero() {
+    heroStarted = true;
+    replay.classList.remove('show');
+    if (reduce) { hero.draw(hero.n - 1); replay.classList.add('show'); return; }
+    const t0 = performance.now(), fps = 24;
+    const tick = now => {
+      const t = Math.min(hero.n - 1, (now - t0) / 1000 * fps);
+      hero.draw(t);
+      if (t < hero.n - 1) requestAnimationFrame(tick); else replay.classList.add('show');
+    };
+    requestAnimationFrame(tick);
+  }
+  hero.draw(0);
+  hero.load(() => { if (!heroStarted) playHero(); });
+  // On a slow connection, settle on the end frame instead of a dark stage
+  setTimeout(() => { if (!heroStarted && hero.ready[hero.n - 1]) { heroStarted = true; hero.draw(hero.n - 1); replay.classList.add('show'); } }, 6000);
+  replay.onclick = playHero;
+
+  /* Thin: side-profile scrub with a 16 mm dimension callout */
+  const thinSec = document.getElementById('thin');
+  const thin = new Sequence(thinSec.querySelector('canvas'), 'thin');
+  const dim = document.getElementById('dim16');
+  scrub(thinSec, thin, p => {
+    ranges(thinSec, p);
+    const [fx] = thin.point(...ANCHORS.thin.front), [bx] = thin.point(...ANCHORS.thin.back);
+    const [, y] = thin.point(.5, ANCHORS.thin.bottom[1] + .035);
+    Object.assign(dim.style, { left: fx + 'px', width: Math.max(8, bx - fx) + 'px', top: y + 'px' });
+    dim.classList.toggle('on', p > .86);
+  });
+
+  /* Shabbat: sunset scrub with the times list */
+  const shabSec = document.getElementById('shabbat');
+  const narrow = matchMedia('(max-width: 820px)').matches;
+  const shab = new Sequence(shabSec.querySelector('canvas'), 'shabbat', { focus: [narrow ? .5 : .62, .5] });
+  const times = [...document.querySelectorAll('#times li')];
+  const bounds = [0, .25, .5, .8, 1.01];
+  scrub(shabSec, shab, p => {
+    ranges(shabSec, p);
+    times.forEach((li, i) => li.classList.toggle('on', p >= bounds[i] && p < bounds[i + 1]));
+  });
+
+  /* Inside: teardown scrub, captions and numbered parts */
+  const inSec = document.getElementById('inside');
+  const pin = inSec.querySelector('.scrub-pin');
+  const ex = new Sequence(inSec.querySelector('canvas'), 'exploded');
+  const legend = document.getElementById('legend');
+  const marks = ANCHORS.exploded.map(([label], i) => {
+    const m = document.createElement('span');
+    m.className = 'mark'; m.textContent = i + 1; m.setAttribute('aria-hidden', 'true');
+    pin.appendChild(m);
+    const li = document.createElement('li');
+    li.innerHTML = `<b>${i + 1}</b>${label}`;
+    legend.appendChild(li);
+    return m;
+  });
+  scrub(inSec, ex, p => {
+    ranges(inSec, p);
+    ANCHORS.exploded.forEach(([, x, y], i) => {
+      const [px, py] = ex.point(x, y);
+      marks[i].style.left = px + 'px';
+      marks[i].style.top = py + 'px';
+      marks[i].classList.toggle('on', p > .87 + i * .012);
+    });
+  });
+
+  /* Turntable, built to the skill's gesture rules: 10 px of hysteresis, then 1:1 tracking with pointer
+     capture; release velocity from the last 100 ms of samples; momentum projected with a deceleration
+     rate of .998 per ms; landing on the nearest whole frame (or the front view when close) through a
+     spring that inherits the velocity, so there is no seam and never a ghosted in-between frame. */
+  const turnEl = document.getElementById('turn');
+  const turn = new Sequence(turnEl.querySelector('canvas'), 'turntable', { wrap: true });
+  const DECEL = .998;
+  const framesPerPx = () => turn.n / (turnEl.clientWidth * 1.4);
+  const settle = new Spring(0, 1, .3);
+  let ang = 0, vel = 0, landing = 0, phase = 'idle', drag = null, hist = [], touched = false, turnVisible = false;
+  new IntersectionObserver(es => { turnVisible = es[0].isIntersecting; if (turnVisible) turn.load(); }, { rootMargin: '50% 0px' }).observe(turnEl);
+  turnEl.addEventListener('pointerdown', e => {
+    touched = true;
+    phase = 'held';                      // interrupt any motion where it is, from its live value
+    drag = { x: e.clientX, a: ang, live: false };
+    hist = [{ t: e.timeStamp, a: ang }];
+    turnEl.setPointerCapture(e.pointerId);
+    turnEl.classList.add('grabbing');
+  });
+  turnEl.addEventListener('pointermove', e => {
+    if (!drag) return;
+    if (!drag.live) {
+      if (Math.abs(e.clientX - drag.x) < 10) return;
+      drag.live = true; drag.x = e.clientX; drag.a = ang;
+    }
+    ang = drag.a - (e.clientX - drag.x) * framesPerPx();
+    hist.push({ t: e.timeStamp, a: ang });
+    while (hist.length > 2 && e.timeStamp - hist[0].t > 100) hist.shift();
+  });
+  const landOn = projected => {
+    let target = Math.round(projected);
+    const m = ((target % turn.n) + turn.n) % turn.n;
+    if (m <= 2 || m >= turn.n - 2) target = Math.round(target / turn.n) * turn.n;   // the front view is a soft detent
+    return target;
+  };
+  const release = e => {
+    if (!drag) return;
+    turnEl.classList.remove('grabbing');
+    const a = hist[0], b = hist[hist.length - 1];
+    vel = drag.live && e.timeStamp - b.t < 80 ? (b.a - a.a) / Math.max(8, b.t - a.t) * 1000 : 0;   // frames per second
+    drag = null;
+    landing = landOn(ang + (vel / 1000) * DECEL / (1 - DECEL));
+    if (reduce) { ang = landing; phase = 'rest'; return; }
+    if (Math.abs(vel) > 2) phase = 'coast';
+    else { settle.snap(ang).tune(1, .3).to(landing, vel); phase = 'settle'; }
+  };
+  turnEl.addEventListener('pointerup', release);
+  turnEl.addEventListener('pointercancel', release);
+  turnEl.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    touched = true;
+    const from = phase === 'settle' ? settle.target : Math.round(ang);
+    landing = from + (e.key === 'ArrowLeft' ? 3 : -3);
+    if (reduce) { ang = landing; phase = 'rest'; return; }
+    settle.snap(ang).tune(1, .35).to(landing, phase === 'coast' ? vel : 0);
+    phase = 'settle';
+  });
+  let turnLast = 0;
+  (function spin(now) {
+    const dt = turnLast ? Math.min(.05, (now - turnLast) / 1000) : 1 / 60;
+    turnLast = now;
+    if (turnVisible) {
+      if (phase === 'coast') {
+        ang += vel * dt;
+        vel *= Math.pow(DECEL, dt * 1000);
+        if (Math.abs(vel) < 2) { settle.snap(ang).tune(.8, .4).to(landing, vel); phase = 'settle'; }   // flick: damping .8
+      } else if (phase === 'settle') {
+        if (!settle.step(dt)) phase = 'rest';
+        ang = settle.x;
+      } else if (phase === 'idle' && !touched && !reduce) {
+        ang += 2.6 * dt;   // a slow showroom turn until the first touch
+      }
+      turn.draw(((ang % turn.n) + turn.n) % turn.n);
+    }
+    requestAnimationFrame(spin);
+  })(performance.now());
+
+  /* Staggered fade-in, after Apple's StaggeredFadeIn: .15s stagger, .9s fade, .7s rise of 30px */
+  if (!reduce && 'animate' in Element.prototype) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      [...e.target.querySelectorAll('[data-si]')].forEach((el, i) => {
+        el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: i * 150, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'backwards' });
+        el.animate([{ transform: 'translateY(30px)' }, { transform: 'none' }], { duration: 700, delay: i * 150, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+      });
+    }), { rootMargin: '0px 0px -15% 0px' });
+    // Only sections that start below the fold animate, so the first screen is complete at rest
+    document.querySelectorAll('[data-stagger]').forEach(s => { if (s.getBoundingClientRect().top > innerHeight) io.observe(s); });
+  }
+
+  /* Word-by-word reveal tied to scroll */
+  const wordBlocks = [...document.querySelectorAll('[data-words]')].map(p => {
+    const words = p.textContent.trim().split(/\s+/);
+    p.innerHTML = words.map(w => `<span class="w">${w}</span>`).join(' ');
+    return { p, spans: [...p.querySelectorAll('.w')] };
+  });
+  function words() {
+    wordBlocks.forEach(({ p, spans }) => {
+      const r = p.getBoundingClientRect();
+      const prog = reduce ? 1 : clamp((innerHeight * .85 - r.top) / (innerHeight * .45 + r.height * .5), 0, 1);
+      const n = Math.round(prog * spans.length);
+      spans.forEach((s, i) => s.classList.toggle('lit', i < n));
+    });
+  }
+
+  /* Nav state and the floating reserve bar */
+  const nav = document.getElementById('nav'), bar = document.getElementById('buybar'), reserve = document.getElementById('reserve');
+  const heroStage = document.getElementById('heroStage');
+  const lowControls = [...document.querySelectorAll('.gal-ctrl, .seg, .turn-hint, .moment-cap, .select')];
+  function chrome() {
+    nav.classList.toggle('scrolled', scrollY > 10);
+    // Never stack one light translucent surface over another: step aside when a control sits low on screen
+    const low = el => { const r = el.getBoundingClientRect(); return r.bottom > innerHeight - 96 && r.top < innerHeight; };
+    const clash = lowControls.some(low) || [...document.querySelectorAll('.cap.bottom')].some(el => +(el.style.opacity || 0) > .1 && low(el));
+    const show = !clash && heroStage.getBoundingClientRect().bottom < 0 && reserve.getBoundingClientRect().top > innerHeight * .9;
+    bar.classList.toggle('show', show);
+    bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+    bar.querySelector('a').tabIndex = show ? 0 : -1;
+  }
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; words(); chrome(); }); } }, { passive: true });
+  addEventListener('resize', () => { words(); chrome(); });
+  words(); chrome();
+
+  /* Finishes and product viewer */
+  const FIN = {
+    maroon: { name: 'Luxury Maroon', a: '#b9636f', b: '#5f1724' },
+    grey: { name: 'Space Grey', a: '#c4c7cd', b: '#5a5c61' },
+    magenta: { name: 'Space Magenta', a: '#e27ab5', b: '#86185a' },
+    black: { name: 'Luxury Black Matte', a: '#6e6e73', b: '#1b1b1e' }
+  };
+  const sw = document.getElementById('swatches'), swName = document.getElementById('swName'), names = document.getElementById('names');
+  Object.entries(FIN).forEach(([k, f], i) => {
+    const grad = `radial-gradient(circle at 35% 30%, ${f.a}, ${f.b} 60%)`;
+    const b = document.createElement('span');
+    b.className = 'sw'; b.setAttribute('role', 'button'); b.tabIndex = 0; b.dataset.finish = k;
+    b.setAttribute('aria-label', f.name); b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.style.background = grad;
+    sw.appendChild(b);
+    const n = document.createElement('div');
+    n.innerHTML = `<i style="background:${grad}"></i>${f.name}`;
+    names.appendChild(n);
+  });
+  let finish = 'maroon', view = 'color';
+  const stageImgs = [...document.querySelectorAll('#stage img')];
+  const show = () => stageImgs.forEach(im => im.classList.toggle('on', im.dataset.view === view && (view !== 'color' || im.dataset.finish === finish)));
+  const pick = k => { finish = k; swName.textContent = FIN[k].name; sw.querySelectorAll('.sw').forEach(s => s.setAttribute('aria-pressed', s.dataset.finish === k ? 'true' : 'false')); show(); };
+  sw.addEventListener('click', e => { const s = e.target.closest('.sw'); if (s) { e.stopPropagation(); pick(s.dataset.finish); } });
+  sw.addEventListener('keydown', e => { const s = e.target.closest('.sw'); if (s && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); pick(s.dataset.finish); } });
+  document.getElementById('pills').addEventListener('click', e => {
+    const p = e.target.closest('.pill');
+    if (!p || p.getAttribute('aria-expanded') === 'true') return;
+    document.querySelectorAll('.pill').forEach(x => x.setAttribute('aria-expanded', x === p ? 'true' : 'false'));
+    view = p.dataset.view; show();
+  });
+
+  /* Highlights gallery with timed progress */
+  const gal = document.getElementById('gallery'), cards = [...gal.children], dotsEl = document.getElementById('dots');
+  const dots = cards.map((c, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot'; d.type = 'button'; d.setAttribute('role', 'tab'); d.setAttribute('aria-label', `Highlight ${i + 1}`);
+    d.innerHTML = '<i></i>';
+    d.onclick = () => { go(i); t0 = performance.now(); };
+    dotsEl.appendChild(d);
+    return d;
+  });
+  let gi = 0, playing = !reduce, t0 = performance.now(), galVisible = false;
+  const setDots = () => { dots.forEach((d, j) => { d.classList.toggle('on', j === gi); d.setAttribute('aria-selected', j === gi); }); cards.forEach((c, j) => c.classList.toggle('on', j === gi)); };
+  function go(i) { gi = (i + cards.length) % cards.length; const c = cards[gi]; gal.scrollTo({ left: c.offsetLeft - (gal.clientWidth - c.clientWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); setDots(); }
+  const playBtn = document.getElementById('play'), playIcon = document.getElementById('playIcon');
+  const setIcon = () => {
+    playIcon.innerHTML = playing ? '<rect x="3" y="2" width="4" height="14" rx="1.2"/><rect x="11" y="2" width="4" height="14" rx="1.2"/>' : '<path d="M4 2.2v13.6c0 .8.9 1.3 1.6.9l11-6.8c.6-.4.6-1.3 0-1.7l-11-6.8C4.9.9 4 1.4 4 2.2z"/>';
+    playBtn.setAttribute('aria-label', playing ? 'Pause highlights' : 'Play highlights');
+  };
+  playBtn.onclick = () => { playing = !playing; t0 = performance.now(); setIcon(); };
+  setIcon(); setDots();
+  let st;
+  gal.addEventListener('scroll', () => {
+    clearTimeout(st);
+    st = setTimeout(() => {
+      const mid = gal.scrollLeft + gal.clientWidth / 2;
+      let best = 0, bd = Infinity;
+      cards.forEach((c, j) => { const d = Math.abs(c.offsetLeft + c.clientWidth / 2 - mid); if (d < bd) { bd = d; best = j; } });
+      if (best !== gi) { gi = best; setDots(); t0 = performance.now(); }
+    }, 120);
+  }, { passive: true });
+  new IntersectionObserver(es => { galVisible = es[0].isIntersecting; if (galVisible) t0 = performance.now(); }, { threshold: .35 }).observe(gal);
+  (function tick(now) {
+    const d = dots[gi];
+    if (playing && galVisible) {
+      const p = Math.min(1, (now - t0) / 6000);
+      d.style.setProperty('--p', p);
+      if (p >= 1) { go(gi + 1); t0 = now; }
+    }
+    requestAnimationFrame(tick);
+  })(performance.now());
+
+  /* The calendar, in light: segmented control, sliding pill, crossfading states */
+  const MOMENT_COPY = {
+    chanukah: '<strong>Chanukah.</strong> One more hidden light each night, eight in all.',
+    omer: '<strong>Sefirat HaOmer.</strong> All 49 days counted on the display, with a reminder each night.',
+    yahrzeit: '<strong>Yahrzeit.</strong> A soft memorial glow that holds all day for someone you love.',
+    welcome: '<strong>Welcome home.</strong> Everyone picks a color, and the ש shows it when they come near. Weekdays only.'
+  };
+  const mEl = document.getElementById('moments');
+  const segBtns = [...mEl.querySelectorAll('.seg button')], segPill = mEl.querySelector('.seg-pill');
+  const mImgs = [...mEl.querySelectorAll('.moment-stage img')], mCap = document.getElementById('momentCap');
+  let mIdx = 0, mTouched = false, mVisible = false;
+  function setMoment(i, focus) {
+    mIdx = (i + segBtns.length) % segBtns.length;
+    const b = segBtns[mIdx], key = b.dataset.m;
+    segBtns.forEach((x, j) => { x.setAttribute('aria-selected', j === mIdx ? 'true' : 'false'); x.tabIndex = j === mIdx ? 0 : -1; });
+    mImgs.forEach(im => im.classList.toggle('on', im.dataset.m === key));
+    mCap.innerHTML = MOMENT_COPY[key];
+    pillTo(b);
+    if (focus) b.focus();
+  }
+  const pillX = new Spring(0, 1, .35), pillW = new Spring(0, 1, .35);
+  let pillReady = false, pillRunning = false, pillLast = 0;
+  function paintPill() { segPill.style.width = pillW.x + 'px'; segPill.style.transform = `translateX(${pillX.x}px)`; }
+  function pillTick(now) {
+    const dt = pillLast ? (now - pillLast) / 1000 : 1 / 60;
+    pillLast = now;
+    const moving = pillX.step(dt) | pillW.step(dt);
+    paintPill();
+    if (moving) requestAnimationFrame(pillTick); else pillRunning = false;
+  }
+  function pillTo(b) {
+    const x = b.offsetLeft - 4, w = b.offsetWidth;
+    if (!pillReady || reduce) { pillX.snap(x); pillW.snap(w); pillReady = true; paintPill(); return; }
+    pillX.to(x); pillW.to(w);
+    if (!pillRunning) { pillRunning = true; pillLast = 0; requestAnimationFrame(pillTick); }
+  }
+  segBtns.forEach((b, i) => b.addEventListener('click', () => { mTouched = true; setMoment(i); }));
+  mEl.querySelector('.seg').addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); mTouched = true; setMoment(mIdx + (e.key === 'ArrowRight' ? 1 : -1), true); }
+  });
+  new IntersectionObserver(es => { mVisible = es[0].isIntersecting; }, { threshold: .5 }).observe(mEl);
+  setInterval(() => { if (mVisible && !mTouched && !reduce) setMoment(mIdx + 1); }, 4500);
+  addEventListener('resize', () => setMoment(mIdx));
+  requestAnimationFrame(() => setMoment(0));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setMoment(mIdx));
+
+  /* Live e-paper: Hebrew date (Intl Hebrew calendar), this week's candle lighting and havdalah */
+  const CITIES = [
+    ['Los Angeles', 34.0522, -118.2437, 'America/Los_Angeles', 18], ['New York', 40.7128, -74.006, 'America/New_York', 18],
+    ['Miami', 25.7617, -80.1918, 'America/New_York', 18], ['Chicago', 41.8781, -87.6298, 'America/Chicago', 18],
+    ['Toronto', 43.6532, -79.3832, 'America/Toronto', 18], ['London', 51.5074, -0.1278, 'Europe/London', 18],
+    ['Paris', 48.8566, 2.3522, 'Europe/Paris', 18], ['Jerusalem', 31.7683, 35.2137, 'Asia/Jerusalem', 40],
+    ['Tel Aviv', 32.0853, 34.7818, 'Asia/Jerusalem', 20], ['Buenos Aires', -34.6037, -58.3816, 'America/Argentina/Buenos_Aires', 18],
+    ['Melbourne', -37.8136, 144.9631, 'Australia/Melbourne', 18]
+  ];
+  const D2R = Math.PI / 180;
+  function sunset(y, m, d, lat, lon) {
+    const days = (Date.UTC(y, m, d, 12) - Date.UTC(2000, 0, 1, 12)) / 864e5;
+    const Js = Math.round(days - lon / 360) - lon / 360;
+    const M = ((357.5291 + 0.98560028 * Js) % 360 + 360) % 360, Mr = M * D2R;
+    const C = 1.9148 * Math.sin(Mr) + .02 * Math.sin(2 * Mr) + .0003 * Math.sin(3 * Mr);
+    const lam = ((M + C + 180 + 102.9372) % 360) * D2R;
+    const Jt = Js + .0053 * Math.sin(Mr) - .0069 * Math.sin(2 * lam);
+    const dec = Math.asin(Math.sin(lam) * Math.sin(23.4397 * D2R));
+    const cw = (Math.sin(-.833 * D2R) - Math.sin(lat * D2R) * Math.sin(dec)) / (Math.cos(lat * D2R) * Math.cos(dec));
+    const w = Math.acos(clamp(cw, -1, 1)) / D2R;
+    return new Date(Date.UTC(2000, 0, 1, 12) + (Jt + w / 360) * 864e5);
+  }
+  const gem = n => {
+    const parts = [[400, 'ת'], [300, 'ש'], [200, 'ר'], [100, 'ק'], [90, 'צ'], [80, 'פ'], [70, 'ע'], [60, 'ס'], [50, 'נ'], [40, 'מ'], [30, 'ל'], [20, 'כ'], [10, 'י'], [9, 'ט'], [8, 'ח'], [7, 'ז'], [6, 'ו'], [5, 'ה'], [4, 'ד'], [3, 'ג'], [2, 'ב'], [1, 'א']];
+    let out = '', r = n % 1000;
+    for (const [v, ch] of parts) while (r >= v) { if (r === 15) { out += 'טו'; r = 0; break; } if (r === 16) { out += 'טז'; r = 0; break; } out += ch; r -= v; }
+    return out.length === 1 ? out + '׳' : out.slice(0, -1) + '״' + out.slice(-1);
+  };
+  const citySel = document.getElementById('city');
+  const myTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return ''; } })();
+  CITIES.forEach(([name], i) => { const o = document.createElement('option'); o.value = i; o.textContent = name; citySel.appendChild(o); });
+  const mine = CITIES.findIndex(c => c[3] === myTz);
+  citySel.value = String(mine >= 0 ? mine : 1);
+  function localParts(date, tz) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' }).formatToParts(date).map(x => [x.type, x.value]));
+    return { y: +p.year, m: +p.month - 1, d: +p.day, wd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday) };
+  }
+  const hm = (date, tz) => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(date).replace(/\s?[AP]M/i, '');
+  function renderLive() {
+    const [name, lat, lon, tz, before] = CITIES[+citySel.value];
+    const now = new Date();
+    const t = localParts(now, tz);
+    // The Hebrew day begins at nightfall
+    const todaySet = sunset(t.y, t.m, t.d, lat, lon);
+    const hebDay = new Date(now.getTime() + (now > todaySet ? 864e5 : 0));
+    const heParts = Object.fromEntries(new Intl.DateTimeFormat('en-u-ca-hebrew', { timeZone: tz, day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(hebDay).map(x => [x.type, x.value]));
+    const heMonth = new Intl.DateTimeFormat('he-u-ca-hebrew', { timeZone: tz, month: 'long' }).format(hebDay);
+    const heYear = parseInt(String(heParts.year).replace(/\D/g, ''), 10);
+    document.getElementById('epdDay').textContent = new Intl.DateTimeFormat('he', { timeZone: tz, weekday: 'long' }).format(now);
+    document.getElementById('epdDate').textContent = `${gem(+heParts.day)} ${heMonth}`;
+    document.getElementById('epdYear').textContent = gem(heYear);
+    document.getElementById('epdEn').textContent = `${heParts.day} ${heParts.month} ${heYear}`;
+    document.getElementById('epdCity').textContent = name;
+    // Find this Shabbat: the first Friday whose havdalah is still ahead
+    let candle, hav;
+    for (let k = -1; k < 9; k++) {
+      const dt = new Date(Date.UTC(t.y, t.m, t.d + k));
+      if (dt.getUTCDay() !== 5) continue;
+      const fri = sunset(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate(), lat, lon);
+      const sat = sunset(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate() + 1, lat, lon);
+      candle = new Date(fri.getTime() - before * 6e4);
+      hav = new Date(sat.getTime() + 42 * 6e4);
+      if (hav > now) break;
+    }
+    document.getElementById('epdLight').textContent = hm(candle, tz);
+    document.getElementById('epdHav').textContent = hm(hav, tz);
+    const cd = document.getElementById('countdown');
+    if (now >= candle && now < hav) {
+      cd.innerHTML = `<em>Shabbat mode is on in ${name}.</em> Shabbat Shalom.`;
+    } else {
+      const mins = Math.max(0, Math.round((candle - now) / 6e4));
+      const dd = Math.floor(mins / 1440), hh = Math.floor((mins % 1440) / 60), mm = mins % 60;
+      const span = [dd && `${dd} day${dd > 1 ? 's' : ''}`, hh && `${hh} hour${hh > 1 ? 's' : ''}`, !dd && `${mm} minute${mm === 1 ? '' : 's'}`].filter(Boolean).join(', ');
+      cd.innerHTML = `Shabbat mode turns on in <em>${span}</em>.`;
+    }
+  }
+  citySel.addEventListener('change', renderLive);
+  renderLive();
+  setInterval(renderLive, 30000);
+
+  document.getElementById('reserveBtn').onclick = () => {
+    document.getElementById('note').textContent = 'Reservations open with the first production run. This page is a design preview.';
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+# Static site: index.html plus image sequences. No build step.
+modules = ["python-3.11"]
+run = "python3 -m http.server 8000"
+
+[[ports]]
+localPort = 8000
+externalPort = 80
+
+[deployment]
+deploymentTarget = "static"
+publicDir = "/"
+
+[[deployment.responseHeaders]]
+path = "/seq/*"
+name = "Cache-Control"
+value = "public, max-age=31536000, immutable"
+
+[[deployment.responseHeaders]]
+path = "/img/*"
+name = "Cache-Control"
+value = "public, max-age=31536000, immutable"
